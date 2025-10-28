@@ -1,0 +1,22 @@
+# Étape 1 : build du JAR avec Maven
+FROM maven:3.9.6-eclipse-temurin-21 AS build
+WORKDIR /app
+COPY pom.xml .
+COPY src ./src
+RUN mvn clean package -DskipTests
+
+# Étape 2 : création de l'image exécutable
+FROM eclipse-temurin:21-jdk
+WORKDIR /app
+
+# Copie du JAR généré depuis l’étape précédente
+COPY --from=build /app/target/*.jar app.jar
+
+# Ici on active le profil Docker
+ENV SPRING_PROFILES_ACTIVE=docker
+
+# Port d’exposition (optionnel mais utile)
+EXPOSE 8005
+
+# Lancement de l’application
+ENTRYPOINT ["java", "-jar", "app.jar"]

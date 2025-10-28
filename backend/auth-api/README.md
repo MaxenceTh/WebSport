@@ -79,3 +79,37 @@ AuthenticationProvider authenticationProvider(UserDetailsService userDetailsServ
 
 [DaoAuthenticationProvider - Spring Security API](https://docs.spring.io/spring-security/reference/api/java/org/springframework/security/authentication/dao/DaoAuthenticationProvider.html)
 
+
+# Docker
+
+## 1️⃣ Build de l'image Docker
+
+```bash
+docker build -t monapp-spring .
+```
+
+## 2️⃣ Lancer le conteneur
+```bash
+docker run -p 8080:8005 monapp-spring
+```
+- Le port 8005 est celui sur lequel Spring Boot écoute à l’intérieur du conteneur.
+- Le port 8080 est celui exposé sur ta machine (Expose: ici 8005 aussi).
+
+## 3️⃣ Lancer le conteneur en arrière-plan
+```bash
+docker run -d -p 8080:8005 monapp-spring
+```
+
+## 4️⃣ Consulter les logs du conteneur
+```bash
+docker logs -f <container_id>
+```
+
+## 5️⃣ Accéder à l’API
+Exemples :
+
+- Login : POST http://localhost:8080/auth/login
+
+- Me : GET http://localhost:8080/auth/me
+
+- Créer une séance : POST http://localhost:8080/seances/create

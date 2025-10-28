@@ -34,7 +34,7 @@ public class Seance {
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     private User user;
 
-    @OneToMany(mappedBy = "seance", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(mappedBy = "seance", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Exercice> exercices = new ArrayList<>();
 
     @OneToMany(mappedBy = "seance", cascade = CascadeType.REMOVE, orphanRemoval = true)
