@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+
 
 // material-ui
 import Button from '@mui/material/Button';
@@ -21,6 +22,9 @@ import CustomFormControl from 'ui-component/extended/Form/CustomFormControl';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
+// api
+import api from 'api/api.js';
+
 // ===============================|| JWT - LOGIN ||=============================== //
 
 export default function AuthLogin() {
@@ -35,11 +39,31 @@ export default function AuthLogin() {
     event.preventDefault();
   };
 
+  const navigate = useNavigate();
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setError('');
+
+    try {
+      await api.login(email, password);
+      // redirection vers le dashboard après connexion réussie
+      navigate('/dashboard/default');
+    } catch (err) {
+      console.error(err);
+      setError(err.response?.data?.message || 'Erreur lors de la connexion');
+    }
+  };
+
   return (
     <>
       <CustomFormControl fullWidth>
         <InputLabel htmlFor="outlined-adornment-email-login">Email Address / Username</InputLabel>
-        <OutlinedInput id="outlined-adornment-email-login" type="email" value="info@codedthemes.com" name="email" />
+        <OutlinedInput id="outlined-adornment-email-login" type="email" value={email} onChange={(e) => setEmail(e.target.value)} name="email" />
       </CustomFormControl>
 
       <CustomFormControl fullWidth>
@@ -47,8 +71,9 @@ export default function AuthLogin() {
         <OutlinedInput
           id="outlined-adornment-password-login"
           type={showPassword ? 'text' : 'password'}
-          value="123456"
+          value={password}
           name="password"
+          onChange={(e) => setPassword(e.target.value)}
           endAdornment={
             <InputAdornment position="end">
               <IconButton
@@ -81,7 +106,7 @@ export default function AuthLogin() {
       </Grid>
       <Box sx={{ mt: 2 }}>
         <AnimateButton>
-          <Button color="secondary" fullWidth size="large" type="submit" variant="contained">
+          <Button color="secondary" fullWidth size="large" type="submit" variant="contained" onClick={handleLogin}>
             Sign In
           </Button>
         </AnimateButton>

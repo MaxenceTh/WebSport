@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-
+import { useNavigate } from 'react-router-dom';
 // material-ui
 import { useTheme } from '@mui/material/styles';
 import Avatar from '@mui/material/Avatar';
@@ -29,12 +29,17 @@ import useConfig from 'hooks/useConfig';
 
 // assets
 import User1 from 'assets/images/users/user-round.svg';
-import { IconLogout, IconSearch, IconSettings, IconUser } from '@tabler/icons-react';
+import { IconLogout, IconSearch, IconSettings, IconUser, IconLogin } from '@tabler/icons-react';
+
+// api
+import api from 'api/api.js';
 
 // ==============================|| PROFILE MENU ||============================== //
 
 export default function ProfileSection() {
   const theme = useTheme();
+  const [user, setUser] = useState(null);
+  const navigate = useNavigate();
   const {
     state: { borderRadius }
   } = useConfig();
@@ -69,6 +74,29 @@ export default function ProfileSection() {
 
     prevOpen.current = open;
   }, [open]);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const token = localStorage.getItem('token');
+      if (!token) return; // pas connecté
+
+      try {
+        const currentUser = await api.getCurrentUser();
+        setUser(currentUser);
+      } catch (err) {
+        console.error('Erreur récupération profil :', err.response?.data || err.message);
+        localStorage.removeItem('token');
+      }
+    };
+
+    fetchUser();
+  }, []);
+
+  const handleLogout = () => {
+    api.logout();
+    setUser(null);
+    navigate('/pages/login'); // redirection vers login
+  };
 
   return (
     <>
@@ -117,29 +145,20 @@ export default function ProfileSection() {
                 {open && (
                   <MainCard border={false} elevation={16} content={false} boxShadow shadow={theme.shadows[16]}>
                     <Box sx={{ p: 2, pb: 0 }}>
-                      <Stack>
-                        <Stack direction="row" sx={{ alignItems: 'center', gap: 0.5 }}>
-                          <Typography variant="h4">Good Morning,</Typography>
-                          <Typography component="span" variant="h4" sx={{ fontWeight: 400 }}>
-                            Johne Doe
-                          </Typography>
-                        </Stack>
-                        <Typography variant="subtitle2">Project Admin</Typography>
-                      </Stack>
-                      <OutlinedInput
-                        sx={{ width: '100%', pr: 1, pl: 2, my: 2 }}
-                        id="input-search-profile"
-                        value={value}
-                        onChange={(e) => setValue(e.target.value)}
-                        placeholder="Search profile options"
-                        startAdornment={
-                          <InputAdornment position="start">
-                            <IconSearch stroke={1.5} size="16px" />
-                          </InputAdornment>
-                        }
-                        aria-describedby="search-helper-text"
-                        slotProps={{ input: { 'aria-label': 'weight' } }}
-                      />
+                      {user ? (
+                        <>
+                          <Stack direction="row" sx={{ alignItems: 'center', gap: 0.5 }}>
+                            <Typography variant="h4">Good Morning,</Typography>
+                            <Typography component="span" variant="h4" sx={{ fontWeight: 400 }}>
+                              {user.fullName}
+                            </Typography>
+                          </Stack>
+                          <Typography variant="subtitle2">{user.roleName}</Typography>
+                        </>
+                      ) : (
+                        <Typography variant="h6">Welcome</Typography>
+                      )}
+
                       <Divider />
                     </Box>
                     <Box
@@ -152,66 +171,30 @@ export default function ProfileSection() {
                         '&::-webkit-scrollbar': { width: 5 }
                       }}
                     >
-                      <UpgradePlanCard />
+
                       <Divider />
-                      <Card sx={{ bgcolor: 'primary.light', my: 2 }}>
-                        <CardContent>
-                          <Stack sx={{ gap: 3 }}>
-                            <Stack direction="row" sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
-                              <Typography variant="subtitle1">Start DND Mode</Typography>
-                              <Switch color="primary" checked={sdm} onChange={(e) => setSdm(e.target.checked)} name="sdm" size="small" />
-                            </Stack>
-                            <Stack direction="row" sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
-                              <Typography variant="subtitle1">Allow Notifications</Typography>
-                              <Switch checked={notification} onChange={(e) => setNotification(e.target.checked)} name="sdm" size="small" />
-                            </Stack>
-                          </Stack>
-                        </CardContent>
-                      </Card>
-                      <Divider />
-                      <List
-                        component="nav"
-                        sx={{
-                          width: '100%',
-                          maxWidth: 350,
-                          minWidth: 300,
-                          borderRadius: `${borderRadius}px`,
-                          '& .MuiListItemButton-root': { mt: 0.5 }
-                        }}
-                      >
-                        <ListItemButton sx={{ borderRadius: `${borderRadius}px` }}>
-                          <ListItemIcon>
-                            <IconSettings stroke={1.5} size="20px" />
-                          </ListItemIcon>
-                          <ListItemText primary={<Typography variant="body2">Account Settings</Typography>} />
-                        </ListItemButton>
-                        <ListItemButton sx={{ borderRadius: `${borderRadius}px` }}>
-                          <ListItemIcon>
-                            <IconUser stroke={1.5} size="20px" />
-                          </ListItemIcon>
-                          <ListItemText
-                            primary={
-                              <Stack direction="row" sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
-                                <Typography variant="body2">Social Profile</Typography>
-                                <Chip
-                                  slotProps={{
-                                    label: { sx: { mt: 0.25 } }
-                                  }}
-                                  label="02"
-                                  variant="filled"
-                                  size="small"
-                                  color="warning"
-                                />
-                              </Stack>
-                            }
-                          />
-                        </ListItemButton>
-                        <ListItemButton sx={{ borderRadius: `${borderRadius}px` }}>
-                          <ListItemIcon>
-                            <IconLogout stroke={1.5} size="20px" />
-                          </ListItemIcon>
-                          <ListItemText primary={<Typography variant="body2">Logout</Typography>} />
-                        </ListItemButton>
+                      <List>
+                        {user ? (
+                          <>
+                            <ListItemButton>
+                              <ListItemIcon><IconSettings stroke={1.5} size="20px" /></ListItemIcon>
+                              <ListItemText primary="Account Settings" />
+                            </ListItemButton>
+                            <ListItemButton>
+                              <ListItemIcon><IconUser stroke={1.5} size="20px" /></ListItemIcon>
+                              <ListItemText primary="Social Profile" />
+                            </ListItemButton>
+                            <ListItemButton onClick={handleLogout}>
+                              <ListItemIcon><IconLogout stroke={1.5} size="20px" /></ListItemIcon>
+                              <ListItemText primary="Logout" />
+                            </ListItemButton>
+                          </>
+                        ) : (
+                          <ListItemButton onClick={() => navigate('/pages/login')}>
+                            <ListItemIcon><IconLogin stroke={1.5} size="20px" /></ListItemIcon>
+                            <ListItemText primary="Login" />
+                          </ListItemButton>
+                        )}
                       </List>
                     </Box>
                   </MainCard>
