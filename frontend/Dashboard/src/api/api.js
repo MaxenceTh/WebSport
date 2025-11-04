@@ -72,6 +72,15 @@ const api = {
       throw error;
     }
   },
+
+  createSeance: async (seanceData) => {
+    const token = localStorage.getItem('token');
+    const response = await apiClient.post(`/seances/create`, seanceData, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return response.data;
+  },
+
 };
 
 export default api;

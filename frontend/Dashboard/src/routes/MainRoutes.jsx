@@ -13,7 +13,8 @@ const UtilsColor = Loadable(lazy(() => import('views/utilities/Color')));
 const UtilsShadow = Loadable(lazy(() => import('views/utilities/Shadow')));
 
 // sample page routing
-const SamplePage = Loadable(lazy(() => import('views/sample-page')));
+const CreateSeance = Loadable(lazy(() => import('views/seance-page/CreateSeance')));
+const MySeance = Loadable(lazy(() => import('views/seance-page/MySeance')));
 
 // ==============================|| MAIN ROUTING ||============================== //
 
@@ -47,8 +48,12 @@ const MainRoutes = {
       element: <UtilsShadow />
     },
     {
-      path: '/sample-page',
-      element: <SamplePage />
+      path: '/create-seance',
+      element: <CreateSeance />
+    },
+    {
+      path: '/my-seance',
+      element: <MySeance />
     }
   ]
 };

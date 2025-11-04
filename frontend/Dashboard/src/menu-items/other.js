@@ -7,14 +7,23 @@ const icons = { IconBrandChrome, IconHelp };
 // ==============================|| SAMPLE PAGE & DOCUMENTATION MENU ITEMS ||============================== //
 
 const other = {
-  id: 'sample-docs-roadmap',
+  id: 'seance-pages',
+  title: 'Seance',
   type: 'group',
   children: [
-    {
-      id: 'sample-page',
-      title: 'Sample Page',
+     {
+      id: 'my-seances',
+      title: 'My Seances',
       type: 'item',
-      url: '/sample-page',
+      url: '/my-seance',
+      icon: icons.IconBrandChrome,
+      breadcrumbs: false
+    },
+    {
+      id: 'create-seance',
+      title: 'Create Seance',
+      type: 'item',
+      url: '/create-seance',
       icon: icons.IconBrandChrome,
       breadcrumbs: false
     },
