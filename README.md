@@ -48,3 +48,23 @@ git push origin main
 ```bash
 git branch -d dev
 ```
+
+
+## Cloner le projet original dans un dossier temporaire
+```bash
+git clone <url_du_projet_dashboard> C:\temp\Dashboard
+```
+## Supprimer le .git du projet cloné
+```bash
+Remove-Item -Recurse -Force C:\temp\Dashboard\.git
+```
+## Copier le projet dans ton dépôt cible
+```bash
+Copy-Item -Recurse C:\temp\Dashboard C:\Users\Projets\WebSport\frontend\
+```
+## Ajouter et commit dans ton dépôt
+```bash
+git add frontend/Dashboard
+git commit -m "Ajout du Dashboard dans le dépôt frontend"
+git push origin dev
+```
