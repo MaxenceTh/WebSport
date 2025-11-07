@@ -58,4 +58,13 @@ public class SeanceController {
 
     }
 
+    @GetMapping("/allSeance")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<List<SeanceWithExercicesDto>> getAllSeance(@AuthenticationPrincipal User currentUser) {
+
+        List<SeanceWithExercicesDto> dtos = seanceService.getAllSeances(currentUser);
+        return ResponseEntity.ok(dtos);
+
+    }
+
 }

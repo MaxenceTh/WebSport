@@ -112,4 +112,30 @@ public class SeanceService {
 
     }
 
+    @Transactional(readOnly = true)
+    public List<SeanceWithExercicesDto> getAllSeances(User currentUser) {
+
+        List<Seance> seances = seanceRepository.findByUserId(currentUser.getId());
+
+        return seances.stream().map(seance -> {
+            List<ExercicesDto> exercices = seance.getExercices().stream()
+                    .map(exo -> new ExercicesDto(
+                            exo.getId(),
+                            exo.getExerciceType().getName(),
+                            exo.getSets(),
+                            exo.getRepetitions(),
+                            exo.getWeight(),
+                            exo.getRestTime()))
+                    .toList();
+
+            SeanceWithExercicesDto dto = new SeanceWithExercicesDto();
+            dto.setId(seance.getId());
+            dto.setName(seance.getName());
+            dto.setExercices(exercices);
+
+            return dto;
+        }).toList();
+
+    }
+
 }
