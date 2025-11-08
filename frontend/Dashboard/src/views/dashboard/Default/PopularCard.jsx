@@ -46,7 +46,7 @@ export default function PopularCard({ isLoading }) {
           <CardContent>
             <Stack sx={{ gap: gridSpacing }}>
               <Stack direction="row" sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
-                <Typography variant="h4">Popular Stocks</Typography>
+                <Typography variant="h4">Afficher les dernier exo, affiche si les perfs sont meilleur quavant ou pas</Typography>
                 <IconButton size="small" sx={{ mt: -0.625 }}>
                   <MoreHorizOutlinedIcon
                     fontSize="small"

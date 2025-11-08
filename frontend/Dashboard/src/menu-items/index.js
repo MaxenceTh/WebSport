@@ -7,6 +7,7 @@ import other from './other';
 
 const menuItems = {
   // items: [dashboard, other, pages, utilities, ]
+
   items: [dashboard, other]
 };
 

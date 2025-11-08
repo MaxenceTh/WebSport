@@ -6,7 +6,7 @@ import Grid from '@mui/material/Grid';
 // project imports
 import EarningCard from './EarningCard';
 import PopularCard from './PopularCard';
-import TotalOrderLineChartCard from './TotalOrderLineChartCard';
+import MaxWeightLineChartCard from './MaxWeightLineChartCard';
 import TotalIncomeDarkCard from '../../../ui-component/cards/TotalIncomeDarkCard';
 import TotalIncomeLightCard from '../../../ui-component/cards/TotalIncomeLightCard';
 import TotalGrowthBarChart from './TotalGrowthBarChart';
@@ -33,7 +33,7 @@ export default function Dashboard() {
             <EarningCard isLoading={isLoading} />
           </Grid>
           <Grid size={{ lg: 4, md: 6, sm: 6, xs: 12 }}>
-            <TotalOrderLineChartCard isLoading={isLoading} />
+            <MaxWeightLineChartCard isLoading={isLoading} />
           </Grid>
           <Grid size={{ lg: 4, md: 12, sm: 12, xs: 12 }}>
             <Grid container spacing={gridSpacing}>

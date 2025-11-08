@@ -1,5 +1,5 @@
 // material-ui
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -9,20 +9,21 @@ import DeleteIcon from '@mui/icons-material/Close';
 import MainCard from 'ui-component/cards/MainCard';
 import SubCard from 'ui-component/cards/SubCard';
 import api from '../../api/api';
+import { AuthContext } from 'contexts/AuthenticationContext';
 
 // ==============================|| SAMPLE PAGE ||============================== //
 
 export default function MySeance() {
     const [allSeances, setAllSeances] = useState([]);
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [loading, setLoading] = useState(true);
+    const { user } = useContext(AuthContext);
     // Récupération des séances
     useEffect(() => {
         const fetchUser = async () => {
-            const token = localStorage.getItem('token');
-            setIsAuthenticated(!!token);
+            // const token = localStorage.getItem('token');
+            // setIsAuthenticated(!!token);
 
-            if (!token) {
+            if (!user) {
                 setLoading(false);
                 return;
             }
@@ -63,7 +64,7 @@ export default function MySeance() {
     }
 
     // Non connecté
-    if (!isAuthenticated) {
+    if (!user) {
         return (
             <MainCard title="My Seances">
                 <Typography variant="body1">Veuillez vous connecter pour voir vos séances.</Typography>

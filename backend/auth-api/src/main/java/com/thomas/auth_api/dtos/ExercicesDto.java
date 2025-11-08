@@ -8,8 +8,19 @@ public class ExercicesDto {
     private Integer weight;
     private Integer restTime;
     private String exerciceTypeName;
+    private String date;
 
-    public ExercicesDto(Integer id, String exerciceTypeName, Integer sets, Integer repetitions, Integer weight, Integer restTime) {
+    public ExercicesDto(Integer id, String exerciceTypeName, Integer sets, Integer repetitions, Integer weight, Integer restTime, String date) {
+        this.id = id;
+        this.exerciceTypeName = exerciceTypeName;
+        this.sets = sets;
+        this.repetitions = repetitions;
+        this.weight = weight;
+        this.restTime = restTime;
+        this.date = date;
+    }
+
+     public ExercicesDto(Integer id, String exerciceTypeName, Integer sets, Integer repetitions, Integer weight, Integer restTime) {
         this.id = id;
         this.exerciceTypeName = exerciceTypeName;
         this.sets = sets;
@@ -17,6 +28,7 @@ public class ExercicesDto {
         this.weight = weight;
         this.restTime = restTime;
     }
+    
     public Integer getId() {
         return id;
     }
@@ -52,6 +64,12 @@ public class ExercicesDto {
     }
     public void setExerciceTypeName(String exerciceTypeName) {
         this.exerciceTypeName = exerciceTypeName;
+    }
+    public String getDate() {
+        return date;
+    }
+    public void setDate(String date) {
+        this.date = date;
     }
 
    

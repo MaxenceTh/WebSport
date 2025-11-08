@@ -81,6 +81,43 @@ const api = {
     return response.data;
   },
 
+  getMaxExerciceWeight: async (exerciceName) => {
+    try {
+      const response = await apiClient.get(`/exercices/maxByWeight`, {
+        params:  { param: exerciceName } ,
+      });
+      console.log(`🏋️‍♂️ Poids max pour ${exerciceName} :`, response.data);
+      return response.data;
+    } catch (error) {
+      console.error(`❌ Erreur récupération poids max pour ${exerciceName} :`, error);
+      throw error;
+    }
+  },
+
+  getExerciceNames: async () => {
+    try {
+      const response = await apiClient.get(`/exercices/getExerciceNames`);
+      console.log("📋 Noms des exercices :", response.data);
+      return response.data;
+    } catch (error) {
+      console.error("❌ Erreur récupération noms des exercices :", error);
+      throw error;
+    }
+  },
+  
+  weightByTime: async (exerciceName) => {
+    try {
+      const response = await apiClient.get(`/exercices/weightByTime`, {
+        params:  { param: exerciceName } ,
+      });
+      console.log(`📈 Poids au fil du temps pour ${exerciceName} :`, response.data);
+      return response.data;
+    } catch (error) {
+      console.error(`❌ Erreur récupération poids au fil du temps pour ${exerciceName} :`, error);
+      throw error;
+    } 
+  },
+
 };
 
 export default api;

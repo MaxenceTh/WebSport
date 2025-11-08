@@ -145,7 +145,7 @@ export default function EarningCard({ isLoading }) {
                 color: 'secondary.200'
               }}
             >
-              Total Earning
+              Volume repetitions sur la semaine
             </Typography>
           </Box>
         </MainCard>

@@ -23,7 +23,7 @@ const chartOptions = {
     max: 100,
     labels: { show: false }
   },
-  tooltip: { fixed: { enabled: false }, x: { show: false }, y: { title: { formatter: () => 'Total Order' } }, marker: { show: false } }
+  tooltip: { fixed: { enabled: false }, x: { show: false }, y: { title: { formatter: () => 'Max Weight' } }, marker: { show: false } }
 };
 
 export default chartOptions;

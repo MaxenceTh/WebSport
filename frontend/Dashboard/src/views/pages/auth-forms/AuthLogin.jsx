@@ -53,6 +53,7 @@ export default function AuthLogin() {
       await api.login(email, password);
       // redirection vers le dashboard après connexion réussie
       navigate('/dashboard/default');
+      window.location.reload();
     } catch (err) {
       console.error(err);
       setError(err.response?.data?.message || 'Erreur lors de la connexion');

@@ -1,43 +1,44 @@
-// assets
-import { IconKey } from '@tabler/icons-react';
+import { useContext } from 'react';
+import { IconKey, IconLogin, IconLogout, IconUser } from '@tabler/icons-react';
+import { AuthContext } from '../contexts/AuthenticationContext';
 
-// constant
+
 const icons = {
-  IconKey
+  IconKey,
+  IconLogin,
+  IconLogout,
+  IconUser
 };
 
-// ==============================|| EXTRA PAGES MENU ITEMS ||============================== //
 
-const pages = {
-  id: 'pages',
-  title: 'Pages',
-  caption: 'Pages Caption',
-  icon: icons.IconKey,
-  type: 'group',
-  children: [
-    {
-      id: 'authentication',
-      title: 'Authentication',
-      type: 'collapse',
-      icon: icons.IconKey,
-      children: [
-        {
-          id: 'login',
-          title: 'login',
-          type: 'item',
-          url: '/pages/login',
-          target: true
-        },
-        {
-          id: 'register',
-          title: 'register',
-          type: 'item',
-          url: '/pages/register',
-          target: true
-        }
-      ]
-    }
-  ]
-};
+export default function usePagesMenu() {
+  const { user, logout } = useContext(AuthContext);
 
-export default pages;
+  return {
+    id: 'pages',
+    title: 'Pages',
+    icon: icons.IconKey,
+    type: 'group',
+    children: user
+      ? [
+          {
+            id: 'logout',
+            title: 'Logout',
+            type: 'item',
+            icon: icons.IconLogout,
+            url: '#',
+            onClick: logout // Appelle ta fonction logout()
+          }
+        ]
+      : [
+          {
+            id: 'login',
+            title: 'Login',
+            type: 'item',
+            icon: icons.IconLogin,
+            url: '/pages/login',
+            target: true
+          }
+        ]
+  };
+}

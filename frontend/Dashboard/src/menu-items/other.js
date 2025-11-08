@@ -1,8 +1,8 @@
 // assets
-import { IconBrandChrome, IconHelp } from '@tabler/icons-react';
+import { IconBrandChrome, IconHelp, IconBarbell, IconFilePlus } from '@tabler/icons-react';
 
 // constant
-const icons = { IconBrandChrome, IconHelp };
+const icons = { IconBrandChrome, IconHelp, IconBarbell, IconFilePlus };
 
 // ==============================|| SAMPLE PAGE & DOCUMENTATION MENU ITEMS ||============================== //
 
@@ -16,7 +16,7 @@ const other = {
       title: 'My Seances',
       type: 'item',
       url: '/my-seance',
-      icon: icons.IconBrandChrome,
+      icon: icons.IconBarbell,
       breadcrumbs: false
     },
     {
@@ -24,7 +24,7 @@ const other = {
       title: 'Create Seance',
       type: 'item',
       url: '/create-seance',
-      icon: icons.IconBrandChrome,
+      icon: icons.IconFilePlus,
       breadcrumbs: false
     },
     {
