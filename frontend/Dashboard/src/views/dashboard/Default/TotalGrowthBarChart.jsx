@@ -21,6 +21,10 @@ import { gridSpacing } from 'store/constant';
 // chart data
 import barChartOptions from './chart-data/total-growth-bar-chart';
 
+// api
+import api from '../../../api/api';
+
+
 const status = [
   { value: 'today', label: 'Today' },
   { value: 'month', label: 'This Month' },
@@ -52,7 +56,56 @@ export default function TotalGrowthBarChart({ isLoading }) {
   const secondaryMain = theme.vars.palette.secondary.main;
   const secondaryLight = theme.vars.palette.secondary.light;
 
+  const exercices = ['Fentes', 'Traction', 'Squat'];
+
+  const [repetitionsData, setRepetitionsData] = useState([
+    { name: 'Fentes', data: Array(12).fill(0) },
+    { name: 'Traction', data: Array(12).fill(0) },
+    { name: 'Squat', data: Array(12).fill(0) }
+  ]);
+
+  const [totalRepetitionsMonth, setTotalRepetitionsMonth] = useState(0);
+
+
+  const fetchtotalRepetitionsForMonthByName = async (startDate, endDate, exerciceName) => {
+    try {
+      const response = await api.totalRepetitionsForMonthByName(exerciceName, startDate, endDate);
+      setTotalRepetitionsMonth((prevTotal) => prevTotal + (response || 0));
+      console.log(`Total répétitions pour le mois ${exerciceName}:`, response);
+      console.log("startDate:", startDate, "endDate:", endDate);
+      const monthIndex = new Date(startDate).getMonth();
+      setRepetitionsData((prevData) =>
+        prevData.map((item) =>
+          item.name === exerciceName
+            ? { ...item, data: item.data.map((val, idx) => (idx === monthIndex ? response || 0 : val)) }
+            : item
+        )
+      );
+    } catch (error) {
+      console.error("Erreur lors de la récupération du total des répétitions pour le mois", error);
+    }
+  }
+
   useEffect(() => {
+
+    const today = new Date();
+    const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+    const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+    const formatDate = (date) => {
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    };
+
+
+    setTotalRepetitionsMonth(0);
+
+    exercices.forEach((exercice) => {
+      fetchtotalRepetitionsForMonthByName(formatDate(firstDayOfMonth), formatDate(lastDayOfMonth), exercice);
+    });
+
+
     setChartOptions({
       ...barChartOptions,
       chart: { ...barChartOptions.chart, fontFamily: fontFamily },
@@ -74,8 +127,8 @@ export default function TotalGrowthBarChart({ isLoading }) {
           <Stack sx={{ gap: gridSpacing }}>
             <Stack direction="row" sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
               <Stack sx={{ gap: 1 }}>
-                <Typography variant="subtitle2">Afficher le volume des exos par mois. Exemple: En violet le bench, en bleu les tractions, etc</Typography>
-                <Typography variant="h3">$2,324.00</Typography>
+                <Typography variant="subtitle2">Volume of year by each months</Typography>
+                <Typography variant="h3">{totalRepetitionsMonth} reps this year</Typography>
               </Stack>
               <TextField id="standard-select-currency" select value={value} onChange={(e) => setValue(e.target.value)}>
                 {status.map((option) => (
@@ -95,7 +148,7 @@ export default function TotalGrowthBarChart({ isLoading }) {
                 })
               }}
             >
-              <Chart options={chartOptions} series={series} type="bar" height={480} />
+              <Chart options={chartOptions} series={repetitionsData} type="bar" height={480} />
             </Box>
           </Stack>
         </MainCard>

@@ -118,6 +118,33 @@ const api = {
     } 
   },
 
+  totalRepetitionsForWeek: async (startDate, endDate) => {
+    try {
+      const response = await apiClient.get(`/exercices/totalRepetitionsForWeek`, {
+        params: { startDate, endDate },
+      });
+      console.log(`📊 Total répétitions du ${startDate} au ${endDate} :`, response.data);
+      return response.data;
+    } catch (error) {
+      console.error(`❌ Erreur récupération total répétitions pour la semaine :`, error);
+      throw error;
+    }
+  },
+
+  totalRepetitionsForMonthByName: async ( exerciceName, startDate, endDate) => {
+    try {
+      const response = await apiClient.get(`/exercices/totalRepetitionsForMonthByName`, {
+        params: { exerciceName, startDate, endDate },
+      });
+      console.log(`📊 Total répétitions pour ${exerciceName} du ${startDate} au ${endDate} :`, response.data);
+      return response.data;
+    } catch (error) {
+      console.error(`❌ Erreur récupération total répétitions pour ${exerciceName} :`, error);
+      throw error;
+    } 
+  },
+  
+
 };
 
 export default api;

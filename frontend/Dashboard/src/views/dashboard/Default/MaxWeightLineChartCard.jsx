@@ -184,7 +184,7 @@ export default function MaxWeightLineChartCard({ isLoading }) {
                   <Box>
                     <Stack direction="row" sx={{ alignItems: 'center' }}>
                       <Typography sx={{ fontSize: '2.125rem', fontWeight: 500, mr: 1, mt: 1.75, mb: 0.75 }}>
-                        {maxExercice ?? '-'}
+                        {maxExercice ?? '-'}kg
                       </Typography>
                       <Avatar sx={{ ...theme.typography.smallAvatar, bgcolor: 'primary.200', color: 'primary.dark' }}>
                         <ArrowUpwardIcon fontSize="inherit" sx={{ transform: 'rotate3d(1, 1, 1, 50deg)' }} />

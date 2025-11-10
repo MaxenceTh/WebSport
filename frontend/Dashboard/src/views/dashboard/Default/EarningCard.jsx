@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
-import React from 'react';
+import { useEffect, useState } from 'react';
+
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
@@ -23,11 +24,16 @@ import GetAppTwoToneIcon from '@mui/icons-material/GetAppOutlined';
 import FileCopyTwoToneIcon from '@mui/icons-material/FileCopyOutlined';
 import PictureAsPdfTwoToneIcon from '@mui/icons-material/PictureAsPdfOutlined';
 import ArchiveTwoToneIcon from '@mui/icons-material/ArchiveOutlined';
+import TimeLineIcon from '@mui/icons-material/Timeline';
+
+// api
+import api from '../../../api/api';
+import { set } from 'lodash-es';
 
 export default function EarningCard({ isLoading }) {
   const theme = useTheme();
 
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -36,6 +42,39 @@ export default function EarningCard({ isLoading }) {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const [totalRepetitions, setTotalRepetitions] = useState(0);
+
+  const fetchtotalRepetitionsForWeek = async (startDate, endDate) => {
+    try {
+      const response = await api.totalRepetitionsForWeek(startDate, endDate);
+      if (response.totalRepetitions === undefined) {
+        setTotalRepetitions(0);
+      } else {
+        setTotalRepetitions(response.totalRepetitions);
+      }
+      console.log("Total répétitions pour la semaine :", response.totalRepetitions);
+    } catch (error) {
+      console.error("Erreur lors de la récupération du total des répétitions pour la semaine :", error);
+    }
+  };
+
+  useEffect(() => {
+    const today = new Date();
+    const firstDayOfWeek = new Date(today.setDate(today.getDate() - today.getDay()));
+    const lastDayOfWeek = new Date(today.setDate(firstDayOfWeek.getDate() + 6));
+    const formatDate = (date) => {
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    };
+    fetchtotalRepetitionsForWeek(formatDate(firstDayOfWeek), formatDate(lastDayOfWeek));
+  }, []);
+
+
+
+
 
   return (
     <>
@@ -84,9 +123,10 @@ export default function EarningCard({ isLoading }) {
                   mt: 1
                 }}
               >
-                <CardMedia sx={{ width: 30, height: 30 }} component="img" src={EarningIcon} alt="Notification" />
+                 <TimeLineIcon fontSize="inherit" sx={{ color: '#fff' }} />
               </Avatar>
-              <Avatar
+
+              {/* <Avatar
                 variant="rounded"
                 sx={{
                   ...theme.typography.commonAvatar,
@@ -100,9 +140,9 @@ export default function EarningCard({ isLoading }) {
                 onClick={handleClick}
               >
                 <MoreHorizIcon fontSize="inherit" />
-              </Avatar>
+              </Avatar> */}
             </Stack>
-            <Menu
+            {/* <Menu
               id="menu-earning-card"
               anchorEl={anchorEl}
               keepMounted
@@ -130,9 +170,9 @@ export default function EarningCard({ isLoading }) {
               <MenuItem onClick={handleClose}>
                 <ArchiveTwoToneIcon sx={{ mr: 1.75 }} /> Archive File
               </MenuItem>
-            </Menu>
+            </Menu> */}
             <Stack direction="row" sx={{ alignItems: 'center' }}>
-              <Typography sx={{ fontSize: '2.125rem', fontWeight: 500, mr: 1, mt: 1.75, mb: 0.75 }}>$500.00</Typography>
+              <Typography sx={{ fontSize: '2.125rem', fontWeight: 500, mr: 1, mt: 1.75, mb: 0.75 }}>{totalRepetitions} repetitions</Typography>
               <Avatar sx={{ ...theme.typography.smallAvatar, bgcolor: 'secondary.200', color: 'secondary.dark' }}>
                 <ArrowUpwardIcon fontSize="inherit" sx={{ transform: 'rotate3d(1, 1, 1, 45deg)' }} />
               </Avatar>
@@ -145,7 +185,7 @@ export default function EarningCard({ isLoading }) {
                 color: 'secondary.200'
               }}
             >
-              Volume repetitions sur la semaine
+              Repetitions of the week
             </Typography>
           </Box>
         </MainCard>

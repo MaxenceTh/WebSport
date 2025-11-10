@@ -8,6 +8,7 @@ import com.thomas.auth_api.dtos.WeightByDateDto;
 import com.thomas.auth_api.entities.User;
 import com.thomas.auth_api.services.ExerciceService;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
@@ -48,6 +49,28 @@ public class ExerciceController {
             @AuthenticationPrincipal User currentUser) {
         List<WeightByDateDto> data = exerciceService.getWeightByTime(param, currentUser);
         return ResponseEntity.ok(data);
+    }
+
+    @GetMapping("/totalRepetitionsForWeek")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<Integer> getTotalRepetitionsForWeek(@AuthenticationPrincipal User currentUser,
+            @RequestParam String startDate, @RequestParam String endDate) {
+
+        Integer totalRepetitions = exerciceService.getTotalRepetitionsForWeek(currentUser,
+               LocalDate.parse(startDate), LocalDate.parse(endDate));
+
+        return ResponseEntity.ok(totalRepetitions);
+    }
+
+    @GetMapping("/totalRepetitionsForMonthByName")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<Integer> getTotalRepetitionsForMonthByName(@AuthenticationPrincipal User currentUser,
+            @RequestParam String exerciceName, @RequestParam String startDate, @RequestParam String endDate) {
+
+        Integer totalRepetitions = exerciceService.getTotalRepetitionsForMonthByName(currentUser, exerciceName,
+                LocalDate.parse(startDate), LocalDate.parse(endDate));
+
+        return ResponseEntity.ok(totalRepetitions);
     }
 
 }

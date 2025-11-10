@@ -1,5 +1,6 @@
 package com.thomas.auth_api.services;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -43,7 +44,6 @@ public class ExerciceService {
         return exerciceRepository.findDistinctExerciceTypeNamesByUser(user);
     }
 
-
     public List<WeightByDateDto> getWeightByTime(String exerciceName, User currentUser) {
         User user = userRepository.findById(currentUser.getId())
                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -53,6 +53,19 @@ public class ExerciceService {
         return results.stream()
                 .map(r -> new WeightByDateDto((Integer) r[0], (Date) r[1]))
                 .collect(Collectors.toList());
+    }
+
+    public Integer getTotalRepetitionsForWeek(User currentUser, LocalDate startDate, LocalDate endDate) {
+        User user = userRepository.findById(currentUser.getId())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        return exerciceRepository.countTotalRepetitionOfWeek(user, startDate, endDate);
+    }
+
+    public Integer getTotalRepetitionsForMonthByName(User currentUser, String exerciceName, LocalDate startDate,
+            LocalDate endDate) {
+        User user = userRepository.findById(currentUser.getId())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        return exerciceRepository.countTotalRepetitionOfMonthByName(user, exerciceName, startDate, endDate);
     }
 
 }
