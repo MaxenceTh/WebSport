@@ -24,7 +24,15 @@ public interface ExerciceRepository extends CrudRepository<Exercice, Integer> {
     Integer countTotalRepetitionOfWeek(@Param("user") User user, @Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
 
     @Query("SELECT SUM(e.repetitions * e.sets) FROM Exercice e WHERE e.seance.user = :user AND e.exerciceType.name = :exerciceName AND e.createdAt BETWEEN :startDate AND :endDate")
-    Integer countTotalRepetitionOfMonthByName( User user, String exerciceName, LocalDate startDate, LocalDate endDate);
+    Integer countTotalRepetitionOfMonthByName(@Param("user") User user, @Param("exerciceName") String exerciceName, @Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
 
+    @Query("SELECT e FROM Exercice e WHERE e.seance.user = :user ORDER BY e.createdAt DESC")
+    List<Exercice> findAllExercicesByOrderByCreatedAtDesc(@Param("user") User user);
+
+    @Query("SELECT SUM(e.weight * e.repetitions * e.sets) FROM Exercice e WHERE e.seance.user = :user AND YEAR(e.createdAt) = :year")
+    Integer countTotalWeightOfYear(@Param("user") User user, @Param("year") Integer year);
+
+    @Query("SELECT SUM(e.weight * e.repetitions * e.sets) FROM Exercice e WHERE e.seance.user = :user AND MONTH(e.createdAt) = :month AND YEAR(e.createdAt) = :year")
+    Integer countTotalWeightOfMonth(@Param("user") User user, @Param("month") Integer month, @Param("year") Integer year);
 
 }

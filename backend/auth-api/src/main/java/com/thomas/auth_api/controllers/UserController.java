@@ -36,10 +36,16 @@ public class UserController {
     }
 
     @GetMapping("/")
-    @PreAuthorize("hasRole('ADMIN', 'SUPER_ADMIN')")
-    public ResponseEntity<List<User>> allUsers() {
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")
+    public ResponseEntity<List<UserDto>> allUsers() {
         List<User> users = userService.allUsers();
+        List<UserDto> dtoUsers = users.stream().map(user -> new UserDto(
+                user.getId(),
+                user.getFullName(),
+                user.getEmail(),
+                user.getRole().getName().name()
+        )).toList();
 
-        return ResponseEntity.ok(users);
+        return ResponseEntity.ok(dtoUsers);
     }
 }

@@ -1,6 +1,7 @@
 package com.thomas.auth_api.controllers;
 
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.thomas.auth_api.dtos.SeanceUserDto;
@@ -66,5 +67,16 @@ public class SeanceController {
         return ResponseEntity.ok(dtos);
 
     }
+
+    @GetMapping("/oneSeancesForAdmin")
+    @PreAuthorize("hasRole('SUPER_ADMIN')")
+    public ResponseEntity<List<SeanceWithExercicesDto>> getAllSeancesForAdmin(@RequestParam Integer id) {
+
+        List<SeanceWithExercicesDto> dtos = seanceService.getSeancesForAdmin(id);
+        return ResponseEntity.ok(dtos);
+
+    }
+
+
 
 }

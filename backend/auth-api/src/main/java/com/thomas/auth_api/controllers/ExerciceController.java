@@ -73,4 +73,33 @@ public class ExerciceController {
         return ResponseEntity.ok(totalRepetitions);
     }
 
+    @GetMapping("/allByDateDesc")
+    @PreAuthorize("isAuthenticated()")  
+    public ResponseEntity<List<ExercicesDto>> getAllExercicesByUserOrderedByDateDesc(@AuthenticationPrincipal User currentUser) {
+
+        List<ExercicesDto> exercices = exerciceService.getAllExercicesByUserOrderedByDateDesc(currentUser);
+
+        return ResponseEntity.ok(exercices);
+    }
+
+    @GetMapping("/totalWeightForYear")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<Integer> getTotalWeightForYear(@AuthenticationPrincipal User currentUser,
+            @RequestParam Integer year) {
+
+        Integer totalWeight = exerciceService.getTotalWeightForYear(currentUser, year);
+
+        return ResponseEntity.ok(totalWeight);
+    }
+
+    @GetMapping("/totalWeightForMonth")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<Integer> getTotalWeightForMonth(@AuthenticationPrincipal User currentUser,
+            @RequestParam Integer month, @RequestParam Integer year) {
+
+        Integer totalWeight = exerciceService.getTotalWeightForMonth(currentUser, month, year);
+
+        return ResponseEntity.ok(totalWeight);
+    }
+
 }

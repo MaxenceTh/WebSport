@@ -6,7 +6,7 @@ const icons = { IconBrandChrome, IconHelp, IconBarbell, IconFilePlus };
 
 // ==============================|| SAMPLE PAGE & DOCUMENTATION MENU ITEMS ||============================== //
 
-const other = {
+const seance = {
   id: 'seance-pages',
   title: 'Seance',
   type: 'group',
@@ -39,4 +39,4 @@ const other = {
   ]
 };
 
-export default other;
+export default seance;

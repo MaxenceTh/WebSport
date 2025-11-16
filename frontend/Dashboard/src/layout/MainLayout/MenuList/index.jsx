@@ -10,6 +10,10 @@ import NavGroup from './NavGroup';
 import menuItems from 'menu-items';
 
 import { useGetMenuMaster } from 'api/menu';
+import { useContext } from 'react';
+import { AuthContext } from 'contexts/AuthenticationContext';
+import menuItemsFactory from 'menu-items';
+
 
 // ==============================|| SIDEBAR MENU LIST ||============================== //
 
@@ -17,50 +21,25 @@ function MenuList() {
   const { menuMaster } = useGetMenuMaster();
   const drawerOpen = menuMaster.isDashboardDrawerOpened;
 
+  const { user } = useContext(AuthContext);
+  const menu = menuItemsFactory(user);
+
   const [selectedID, setSelectedID] = useState('');
 
-  const lastItem = null;
+  let lastItemIndex = menu.items.length - 1;
 
-  let lastItemIndex = menuItems.items.length - 1;
-  let remItems = [];
-  let lastItemId;
-
-  if (lastItem && lastItem < menuItems.items.length) {
-    lastItemId = menuItems.items[lastItem - 1].id;
-    lastItemIndex = lastItem - 1;
-    remItems = menuItems.items.slice(lastItem - 1, menuItems.items.length).map((item) => ({
-      title: item.title,
-      elements: item.children,
-      icon: item.icon,
-      ...(item.url && {
-        url: item.url
-      })
-    }));
-  }
-
-  const navItems = menuItems.items.slice(0, lastItemIndex + 1).map((item, index) => {
+  const navItems = menu.items.slice(0, lastItemIndex + 1).map((item, index) => {
     switch (item.type) {
       case 'group':
-        if (item.url && item.id !== lastItemId) {
-          return (
-            <List key={item.id}>
-              <NavItem item={item} level={1} isParents setSelectedID={() => setSelectedID('')} />
-              {index !== 0 && <Divider sx={{ py: 0.5 }} />}
-            </List>
-          );
-        }
-
         return (
           <NavGroup
             key={item.id}
             setSelectedID={setSelectedID}
             selectedID={selectedID}
             item={item}
-            lastItem={lastItem}
-            remItems={remItems}
-            lastItemId={lastItemId}
           />
         );
+
       default:
         return (
           <Typography key={item.id} variant="h6" align="center" sx={{ color: 'error.main' }}>

@@ -19,6 +19,7 @@ import BajajAreaChartCard from './BajajAreaChartCard';
 import MainCard from 'ui-component/cards/MainCard';
 import SkeletonPopularCard from 'ui-component/cards/Skeleton/PopularCard';
 import { gridSpacing } from 'store/constant';
+import { useNavigate } from 'react-router-dom';
 
 // assets
 import ChevronRightOutlinedIcon from '@mui/icons-material/ChevronRightOutlined';
@@ -26,8 +27,13 @@ import MoreHorizOutlinedIcon from '@mui/icons-material/MoreHorizOutlined';
 import KeyboardArrowUpOutlinedIcon from '@mui/icons-material/KeyboardArrowUpOutlined';
 import KeyboardArrowDownOutlinedIcon from '@mui/icons-material/KeyboardArrowDownOutlined';
 
+// api
+import api from '../../../api/api';
+
+
 export default function PopularCard({ isLoading }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const navigate = useNavigate();
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -36,6 +42,26 @@ export default function PopularCard({ isLoading }) {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const [exercicesData, setExercicesData] = React.useState([]);
+
+  const fetchallByDateDesc = async () => {
+    try {
+      const data = await api.allByDateDesc();
+      setExercicesData(data);
+      console.log('Données des séances récupérées :', data);
+    } catch (error) {
+      console.error('Erreur lors de la récupération des séances :', error);
+    }
+  };
+
+  React.useEffect(() => {
+    fetchallByDateDesc();
+  }, []);
+
+  const handleClickViewAll = () => {
+    navigate('/my-exercice');
+  }
 
   return (
     <>
@@ -46,8 +72,8 @@ export default function PopularCard({ isLoading }) {
           <CardContent>
             <Stack sx={{ gap: gridSpacing }}>
               <Stack direction="row" sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
-                <Typography variant="h4">Afficher les dernier exo, affiche si les perfs sont meilleur quavant ou pas</Typography>
-                <IconButton size="small" sx={{ mt: -0.625 }}>
+                <Typography variant="h4">Last recent exercices</Typography>
+                {/* <IconButton size="small" sx={{ mt: -0.625 }}>
                   <MoreHorizOutlinedIcon
                     fontSize="small"
                     sx={{ cursor: 'pointer' }}
@@ -55,7 +81,7 @@ export default function PopularCard({ isLoading }) {
                     aria-haspopup="true"
                     onClick={handleClick}
                   />
-                </IconButton>
+                </IconButton> */}
               </Stack>
               <Menu
                 id="menu-popular-card"
@@ -72,147 +98,51 @@ export default function PopularCard({ isLoading }) {
                 <MenuItem onClick={handleClose}> This Year </MenuItem>
               </Menu>
 
-              <BajajAreaChartCard />
-              <Box>
-                <Stack direction="row" sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
-                  <Typography variant="subtitle1" sx={{ color: 'inherit' }}>
-                    Bajaj Finery
-                  </Typography>
-                  <Stack direction="row" sx={{ alignItems: 'center' }}>
+              {/* <BajajAreaChartCard /> */}
+              {exercicesData.slice(0, 5).map((exercice, index) => (
+                <Box key={index} sx={{ mb: 2 }}>
+                  <Stack direction="row" sx={{ alignItems: 'center', justifyContent: 'space-between' }}></Stack>
+
+                  <Stack direction="row" sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
                     <Typography variant="subtitle1" sx={{ color: 'inherit' }}>
-                      $1839.00
+                      {exercice.exerciceTypeName}
                     </Typography>
-                    <Avatar
-                      variant="rounded"
-                      sx={{
-                        width: 16,
-                        height: 16,
-                        borderRadius: '5px',
-                        bgcolor: 'success.light',
-                        color: 'success.dark',
-                        ml: 2
-                      }}
-                    >
-                      <KeyboardArrowUpOutlinedIcon fontSize="small" color="inherit" />
-                    </Avatar>
+                    <Stack direction="row" sx={{ alignItems: 'center' }}>
+                      <Typography variant="subtitle1" sx={{ color: 'inherit' }}>
+                        {exercice.weight} kg
+                      </Typography>
+                      <Avatar
+                        variant="rounded"
+                        sx={{
+                          width: 16,
+                          height: 16,
+                          borderRadius: '5px',
+                          bgcolor: 'success.light',
+                          color: 'success.dark',
+                          ml: 2
+                        }}
+                      >
+                        <KeyboardArrowUpOutlinedIcon fontSize="small" color="inherit" />
+                      </Avatar>
+                    </Stack>
                   </Stack>
-                </Stack>
-                <Typography variant="subtitle2" sx={{ color: 'success.dark' }}>
-                  10% Profit
-                </Typography>
-                <Divider sx={{ my: 1.5 }} />
-                <Stack direction="row" sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
-                  <Typography variant="subtitle1" sx={{ color: 'inherit' }}>
-                    TTML
+                  <Typography variant="subtitle2" sx={{ color: '' }}>
+                    {exercice.sets} reps x {exercice.repetitions} sets
                   </Typography>
-                  <Stack direction="row" sx={{ alignItems: 'center' }}>
-                    <Typography variant="subtitle1" sx={{ color: 'inherit' }}>
-                      $100.00
-                    </Typography>
-                    <Avatar
-                      variant="rounded"
-                      sx={{
-                        width: 16,
-                        height: 16,
-                        borderRadius: '5px',
-                        bgcolor: 'orange.light',
-                        color: 'orange.dark',
-                        marginLeft: 1.875
-                      }}
-                    >
-                      <KeyboardArrowDownOutlinedIcon fontSize="small" color="inherit" />
-                    </Avatar>
-                  </Stack>
-                </Stack>
-                <Typography variant="subtitle2" sx={{ color: 'orange.dark' }}>
-                  10% loss
-                </Typography>
-                <Divider sx={{ my: 1.5 }} />
-                <Stack direction="row" sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
-                  <Typography variant="subtitle1" sx={{ color: 'inherit' }}>
-                    Reliance
-                  </Typography>
-                  <Stack direction="row" sx={{ alignItems: 'center' }}>
-                    <Typography variant="subtitle1" sx={{ color: 'inherit' }}>
-                      $200.00
-                    </Typography>
-                    <Avatar
-                      variant="rounded"
-                      sx={{
-                        width: 16,
-                        height: 16,
-                        borderRadius: '5px',
-                        bgcolor: 'success.light',
-                        color: 'success.dark',
-                        ml: 2
-                      }}
-                    >
-                      <KeyboardArrowUpOutlinedIcon fontSize="small" color="inherit" />
-                    </Avatar>
-                  </Stack>
-                </Stack>
-                <Typography variant="subtitle2" sx={{ color: 'success.dark' }}>
-                  10% Profit
-                </Typography>
-                <Divider sx={{ my: 1.5 }} />
-                <Stack direction="row" sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
-                  <Typography variant="subtitle1" sx={{ color: 'inherit' }}>
-                    TTML
-                  </Typography>
-                  <Stack direction="row" sx={{ alignItems: 'center' }}>
-                    <Typography variant="subtitle1" sx={{ color: 'inherit' }}>
-                      $189.00
-                    </Typography>
-                    <Avatar
-                      variant="rounded"
-                      sx={{
-                        width: 16,
-                        height: 16,
-                        borderRadius: '5px',
-                        bgcolor: 'orange.light',
-                        color: 'orange.dark',
-                        ml: 2
-                      }}
-                    >
-                      <KeyboardArrowDownOutlinedIcon fontSize="small" color="inherit" />
-                    </Avatar>
-                  </Stack>
-                </Stack>
-                <Typography variant="subtitle2" sx={{ color: 'orange.dark' }}>
-                  10% loss
-                </Typography>
-                <Divider sx={{ my: 1.5 }} />
-                <Stack direction="row" sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
-                  <Typography variant="subtitle1" sx={{ color: 'inherit' }}>
-                    Stolon
-                  </Typography>
-                  <Stack direction="row" sx={{ alignItems: 'center' }}>
-                    <Typography variant="subtitle1" sx={{ color: 'inherit' }}>
-                      $189.00
-                    </Typography>
-                    <Avatar
-                      variant="rounded"
-                      sx={{
-                        width: 16,
-                        height: 16,
-                        borderRadius: '5px',
-                        bgcolor: 'orange.light',
-                        color: 'orange.dark',
-                        ml: 2
-                      }}
-                    >
-                      <KeyboardArrowDownOutlinedIcon fontSize="small" color="inherit" />
-                    </Avatar>
-                  </Stack>
-                </Stack>
-                <Typography variant="subtitle2" sx={{ color: 'orange.dark' }}>
-                  10% loss
-                </Typography>
-              </Box>
+                  <Divider sx={{ my: 1.5 }} />
+                </Box>
+
+              ))}
+
+
+
+
+
+
             </Stack>
           </CardContent>
           <CardActions sx={{ p: 1.25, pt: 0, justifyContent: 'center' }}>
-            <Button size="small" disableElevation>
+            <Button size="small" disableElevation onClick={handleClickViewAll}>
               View All
               <ChevronRightOutlinedIcon />
             </Button>

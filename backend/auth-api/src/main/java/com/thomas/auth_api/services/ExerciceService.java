@@ -68,4 +68,33 @@ public class ExerciceService {
         return exerciceRepository.countTotalRepetitionOfMonthByName(user, exerciceName, startDate, endDate);
     }
 
+    public List<ExercicesDto> getAllExercicesByUserOrderedByDateDesc(User currentUser) {
+        User user = userRepository.findById(currentUser.getId())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        List<Exercice> exercices = exerciceRepository.findAllExercicesByOrderByCreatedAtDesc(user);
+
+        return exercices.stream()
+                .map(exercice -> new ExercicesDto(
+                        exercice.getId(),
+                        exercice.getExerciceType().getName(),
+                        exercice.getSets(),
+                        exercice.getRepetitions(),
+                        exercice.getWeight(),
+                        exercice.getRestTime(),
+                        exercice.getCreatedAt().toString()))
+                .collect(Collectors.toList());
+    }
+
+    public Integer getTotalWeightForYear(User currentUser, Integer year) {
+        User user = userRepository.findById(currentUser.getId())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        return exerciceRepository.countTotalWeightOfYear(user, year);
+    }
+
+    public Integer getTotalWeightForMonth(User currentUser, Integer month, Integer year) {
+        User user = userRepository.findById(currentUser.getId())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        return exerciceRepository.countTotalWeightOfMonth(user, month, year);
+    }
+
 }

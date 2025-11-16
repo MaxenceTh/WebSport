@@ -3,6 +3,7 @@ import { lazy } from 'react';
 // project imports
 import MainLayout from 'layout/MainLayout';
 import Loadable from 'ui-component/Loadable';
+import ProtectedRoute from './ProtectedRoute';
 
 // dashboard routing
 const DashboardDefault = Loadable(lazy(() => import('views/dashboard/Default')));
@@ -15,6 +16,11 @@ const UtilsShadow = Loadable(lazy(() => import('views/utilities/Shadow')));
 // sample page routing
 const CreateSeance = Loadable(lazy(() => import('views/seance-page/CreateSeance')));
 const MySeance = Loadable(lazy(() => import('views/seance-page/MySeance')));
+const MyExercice = Loadable(lazy(() => import('views/exercice-page/MyExercice')));
+
+// admin page routing
+const AdminPage = Loadable(lazy(() => import('views/admin-page/AdminPage')));
+
 
 // ==============================|| MAIN ROUTING ||============================== //
 
@@ -54,6 +60,18 @@ const MainRoutes = {
     {
       path: '/my-seance',
       element: <MySeance />
+    },
+    {
+      path: '/my-exercice',
+      element: <MyExercice />
+    },
+    {
+      path: 'admin-only',
+      element: (
+        <ProtectedRoute roles={['SUPER_ADMIN']} >
+          <AdminPage />
+        </ProtectedRoute>
+      )
     }
   ]
 };

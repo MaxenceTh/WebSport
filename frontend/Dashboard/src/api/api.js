@@ -143,6 +143,68 @@ const api = {
       throw error;
     } 
   },
+
+  allByDateDesc: async () => {
+    try {
+      const response = await apiClient.get(`/exercices/allByDateDesc`);
+      console.log("📋 Séances par date décroissante :", response.data);
+      return response.data;
+    } catch (error) {
+      console.error("❌ Erreur récupération séances par date décroissante :", error);
+      throw error;
+    }
+  },
+
+  totalWeightForYear: async (year) => {
+    try {
+      const response = await apiClient.get(`/exercices/totalWeightForYear`, {
+        params: { year },
+      });
+      console.log(`📊 Poids total pour l'année ${year} :`, response.data);
+      return response.data;
+    } catch (error) {
+      console.error(`❌ Erreur récupération poids total pour l'année ${year} :`, error);
+      throw error;
+    }
+  },
+
+  totalWeightForMonth: async (month, year) => {
+    try {
+      const response = await apiClient.get(`/exercices/totalWeightForMonth`, {
+        params: { month, year },
+      });
+      console.log(`📊 Poids total pour le mois ${month}/${year} :`, response.data);
+      return response.data;
+    } catch (error) {
+      console.error(`❌ Erreur récupération poids total pour le mois ${month}/${year} :`, error);
+      throw error;
+    }
+  },
+
+  getAllUsers: async () => {
+    try {
+      const response = await apiClient.get("/users/");
+      console.log("📋 Tous les utilisateurs :", response.data);
+      return response.data;
+    } catch (error) {
+      console.error("❌ Erreur récupération tous les utilisateurs :", error);
+      throw error;
+    }
+  },
+
+  oneSeancesForAdmin: async (userId) => {
+    try {
+      const response = await apiClient.get(`/seances/oneSeancesForAdmin`, {
+        params: { id: userId },
+      });
+      console.log(`🏋️‍♂️ Séances pour l'utilisateur #${userId} :`, response.data);
+      return response.data;
+    } catch (error) {
+      console.error(`❌ Erreur récupération séances pour l'utilisateur #${userId} :`, error);
+      throw error;
+    }
+  },
+
   
 
 };
