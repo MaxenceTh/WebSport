@@ -10,7 +10,7 @@ export default function AdminPage() {
     const [userSeancesMap, setUserSeancesMap] = useState({}); // { userId: [seances] }
     const [openedUsers, setOpenedUsers] = useState({}); // { userId: true/false }
 
-    // Récupérer tous les utilisateurs
+    
     const fetchAllUsers = async () => {
         try {
             const response = await api.getAllUsers();
@@ -35,7 +35,9 @@ export default function AdminPage() {
 
     // Toggle l'affichage des séances
     const toggleSeances = (userId) => {
+        // Si true = on ferme, si false on ouvre
         setOpenedUsers(prev => ({ ...prev, [userId]: !prev[userId] }));
+        // Si les séances ne sont pas encore chargées, on les charge
         if (!userSeancesMap[userId]) {
             fetchUserSeances(userId);
         }

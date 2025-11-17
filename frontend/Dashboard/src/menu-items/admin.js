@@ -1,7 +1,7 @@
-import { IconShieldCheck } from '@tabler/icons-react';
+import { IconShieldCheck, IconHelp } from '@tabler/icons-react';
 
 
-const icons = { IconShieldCheck };
+const icons = { IconShieldCheck, IconHelp };
 
 const admin = {
   id: 'admin-section',
@@ -15,6 +15,15 @@ const admin = {
       url: '/admin-only',
       icon: icons.IconShieldCheck,
       breadcrumbs: false
+    },
+    {
+      id: 'documentation',
+      title: 'Documentation',
+      type: 'item',
+      url: 'https://codedthemes.gitbook.io/berry/',
+      icon: icons.IconHelp,
+      external: true,
+      target: true
     }
   ]
 };
