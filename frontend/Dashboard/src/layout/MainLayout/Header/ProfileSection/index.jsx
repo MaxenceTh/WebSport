@@ -29,6 +29,7 @@ import useConfig from 'hooks/useConfig';
 
 // assets
 import User1 from 'assets/images/users/user-round.svg';
+import FaceIcon from '@mui/icons-material/face';
 import { IconLogout, IconSearch, IconSettings, IconUser, IconLogin } from '@tabler/icons-react';
 
 // api
@@ -105,14 +106,19 @@ export default function ProfileSection() {
         sx={{ ml: 2, height: '48px', alignItems: 'center', borderRadius: '27px' }}
         icon={
           <Avatar
-            src={User1}
-            alt="user-images"
-            sx={{ typography: 'mediumAvatar', margin: '8px 0 8px 8px !important', cursor: 'pointer' }}
+            sx={{
+              typography: 'mediumAvatar',
+              margin: '8px 0 8px 8px !important',
+              cursor: 'pointer',
+              bgcolor: 'warning.main' // couleur de fond
+            }}
             ref={anchorRef}
             aria-controls={open ? 'menu-list-grow' : undefined}
             aria-haspopup="true"
             color="inherit"
-          />
+          >
+            <FaceIcon />
+          </Avatar>
         }
         label={<IconSettings stroke={1.5} size="24px" />}
         ref={anchorRef}

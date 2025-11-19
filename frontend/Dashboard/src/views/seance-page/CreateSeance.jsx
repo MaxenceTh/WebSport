@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import {
   Typography,
   TextField,
@@ -14,8 +14,12 @@ import DeleteIcon from '@mui/icons-material/Delete';
 
 import MainCard from 'ui-component/cards/MainCard';
 import api from '../../api/api';
+import { AuthContext } from 'contexts/AuthenticationContext';
+
+
 
 export default function CreateSeance() {
+  const { user } = useContext(AuthContext);
   const [name, setName] = useState('');
   const [exercices, setExercices] = useState([
     { exerciceTypeName: '', sets: '', repetitions: '', weight: '', restTime: '' }
@@ -63,6 +67,16 @@ export default function CreateSeance() {
       setLoading(false);
     }
   };
+
+  if (!user) {
+    return (
+      <MainCard title="Créer une séance">
+        <Typography variant="body1">
+          Vous devez être connecté pour créer une séance.
+        </Typography>
+      </MainCard>
+    );
+  }
 
   return (
     <MainCard title="Créer une séance">

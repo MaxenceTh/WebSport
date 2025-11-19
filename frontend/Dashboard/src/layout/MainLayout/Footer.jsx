@@ -15,7 +15,7 @@ export default function Footer() {
         </Typography>
       </Typography>
       <Stack direction="row" sx={{ gap: 1.5, alignItems: 'center', justifyContent: 'space-between' }}>
-        <Link
+        {/* <Link
           component={RouterLink}
           to="https://x.com/codedthemes"
           underline="hover"
@@ -34,7 +34,18 @@ export default function Footer() {
           color="text.primary"
         >
           Discord
+        </Link> */}
+        <Link
+          component={RouterLink}
+          to="https://github.com/MaxenceThomas/WebSport"
+          underline="hover"
+          target="_blank"
+          variant="caption"
+          color="text.primary"
+        >
+          GitHub
         </Link>
+
       </Stack>
     </Stack>
   );
