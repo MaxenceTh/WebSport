@@ -12,13 +12,14 @@ Entrez ici les instructions pour bien débuter avec votre projet...
 
 ### Pré-requis
 
-Ce qu'il est requis pour commencer avec votre projet...
+Avant de lancer le projet, assurez-vous d’avoir installé :
 
-- Programme 1
-- Programme 2
-- etc...
+- Java 21 : Requis pour compiler et exécuter l’application Spring Boot.
+- PostgreSQL : Le projet utilise une base de données relationnelle.
+- Node.js 18+ : Pour exécuter le serveur de développement du frontend.
+- Git : Pour cloner et gérer le repository.
 
-### Installation
+<!-- ### Installation
 
 Les étapes pour installer votre programme....
 
@@ -27,30 +28,24 @@ Dites ce qu'il faut faire...
 _exemple_: Executez la commande ``telnet mapscii.me`` pour commencer ensuite [...]
 
 
-Ensuite vous pouvez montrer ce que vous obtenez au final...
+Ensuite vous pouvez montrer ce que vous obtenez au final... -->
 
 ## Démarrage
 
-Dites comment faire pour lancer votre projet
+- A voir
 
 ## Fabriqué avec
 
-* [VisualStudioCode] - Editeur de textes
-* [React] - 
-* [TemplateBlueBerry] -
-* [Spring]
+- [Visual Studio Code]: Éditeur de code léger et puissant utilisé pour développer la partie frontend.
 
-## Contributing
+- [React] : Bibliothèque JavaScript utilisée pour créer l’interface utilisateur de l’application.
 
-Si vous souhaitez contribuer, lisez le fichier [CONTRIBUTING.md](https://example.org) pour savoir comment le faire.
+- [Template BlueBerry] : Template UI utilisé comme base graphique pour la partie frontend.
 
-## Versions
-Listez les versions ici 
-_exemple :_
-**Dernière version stable :** 5.0
-**Dernière version :** 5.1
-Liste des versions : [Cliquer pour afficher](https://github.com/your/project-name/tags)
-_(pour le lien mettez simplement l'URL de votre projets suivi de ``/tags``)_
+- [Spring Boot] : Framework Java permettant de créer facilement une API backend robuste et structurée.
+
+- [PostgreSQL] : Base de données relationnelle utilisée pour stocker les utilisateurs, séances et exercices.
+
 
 ## Auteurs
 
