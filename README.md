@@ -6,9 +6,9 @@ _(juste en dessous des badges sympatiques à placer)_
 Hercule est un application dashboard permettant de créer ses séances et de suivre son évolution. L'idée est aussi de créer plusieurs rôles accédant à différentes fonctionnalités comme le rôle de SUPER_ADMIN, ADMIN et USER. 
 L'application à pour but de montrer mes compétences en frontend et backend avec notamment la gestion d'un token de sécurité pour les appels à l'API. 
 
-## Pour commencer
+<!-- ## Pour commencer
 
-Entrez ici les instructions pour bien débuter avec votre projet...
+Entrez ici les instructions pour bien débuter avec votre projet... -->
 
 ### Pré-requis
 
@@ -30,9 +30,9 @@ _exemple_: Executez la commande ``telnet mapscii.me`` pour commencer ensuite [..
 
 Ensuite vous pouvez montrer ce que vous obtenez au final... -->
 
-## Démarrage
+<!-- ## Démarrage
 
-- A voir
+- A voir -->
 
 ## Fabriqué avec
 
@@ -51,9 +51,9 @@ Ensuite vous pouvez montrer ce que vous obtenez au final... -->
 
 * **Maxence Thomas** _alias_ [@MaxenceTh](https://github.com/MaxenceTh)
 
-
+<!-- 
 ## License
 
-Ce projet est sous licence ``exemple: WTFTPL`` - voir le fichier [LICENSE.md](LICENSE.md) pour plus d'informations
+Ce projet est sous licence ``exemple: WTFTPL`` - voir le fichier [LICENSE.md](LICENSE.md) pour plus d'informations -->
 
 
