@@ -1,5 +1,5 @@
 # Hercule
-_(juste en dessous des badges sympatiques à placer)_
+<!-- _(juste en dessous des badges sympatiques à placer)_ -->
 
 [![forthebadge](https://forthebadge.com/badges/made-with-java.svg)](http://forthebadge.com)  [![forthebadge](https://forthebadge.com/badges/made-with-javascript.svg)](http://forthebadge.com)
 
