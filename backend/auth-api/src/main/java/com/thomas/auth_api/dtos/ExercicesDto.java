@@ -1,13 +1,22 @@
 package com.thomas.auth_api.dtos;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
+@Schema(description = "Données d'un exercice dans une séance d'entraînement")
 public class ExercicesDto {
 
     private Integer id;
+    @Schema(description = "Série d'une exercice", example = "4")
     private Integer sets;
+    @Schema(description = "Répétitions d'une exercice", example = "10")
     private Integer repetitions;
+    @Schema(description = "Poids utilisé pour l'exercice", example = "50")
     private Integer weight;
+    @Schema(description = "Temps de repos entre les séries", example = "60")
     private Integer restTime;
+    @Schema(description = "Nom du type d'exercice", example = "Développé couché")
     private String exerciceTypeName;
+    @Schema(description = "Date de l'exercice", example = "2023-10-01")
     private String date;
 
     public ExercicesDto(Integer id, String exerciceTypeName, Integer sets, Integer repetitions, Integer weight, Integer restTime, String date) {
