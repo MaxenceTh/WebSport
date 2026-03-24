@@ -134,6 +134,6 @@ public class SeanceControllerTest {
                 .with(csrf())
                 .with(user(customUser)))
                 .andExpect(status().isOk())
-                .andExpect(content().string("Séance supprimée avec succès ✅"));
+                .andExpect(content().string("Séance supprimée avec succès"));
     }
 }
