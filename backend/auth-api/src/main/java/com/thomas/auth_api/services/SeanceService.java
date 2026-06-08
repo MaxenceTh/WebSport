@@ -1,5 +1,6 @@
 package com.thomas.auth_api.services;
 
+import java.sql.Date;
 import java.util.List;
 
 import org.springframework.security.access.AccessDeniedException;
@@ -82,6 +83,38 @@ public class SeanceService {
         } else {
             seanceRepository.delete(seance);
         }
+    }
+
+    @Transactional
+    public SeanceWithExercicesDto updateDate(Integer id, Date newDate, User currentUser) {
+
+        Seance seance = seanceRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Séance introuvable avec l'id : " + id));
+
+        if (!seance.getUser().getId().equals(currentUser.getId())) {
+            throw new RuntimeException("Vous n'êtes pas autorisé à modifier cette séance");
+        }
+
+        seance.setDateSeance(newDate);
+        Seance savedSeance = seanceRepository.save(seance);
+
+        List<ExercicesDto> exercicesDtos = savedSeance.getExercices().stream()
+                .map(exo -> new ExercicesDto(
+                        exo.getId(),
+                        exo.getExerciceType().getName(),
+                        exo.getSets(),
+                        exo.getRepetitions(),
+                        exo.getWeight(),
+                        exo.getRestTime()))
+                .toList();
+
+        SeanceWithExercicesDto dto = new SeanceWithExercicesDto();
+        dto.setId(savedSeance.getId());
+        dto.setName(savedSeance.getName());
+        dto.setDate(newDate.toString());
+        dto.setExercices(exercicesDtos);
+
+        return dto;
     }
 
     @Transactional

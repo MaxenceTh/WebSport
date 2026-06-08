@@ -4,6 +4,7 @@ public class SeanceWithExercicesDto {
     private Integer id;
     private String name;
     private Iterable<ExercicesDto> exercices;
+    private String date;
 
     public Integer getId() {
         return id;
@@ -27,5 +28,13 @@ public class SeanceWithExercicesDto {
 
     public void setExercices(Iterable<ExercicesDto> exercices) {
         this.exercices = exercices;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 }

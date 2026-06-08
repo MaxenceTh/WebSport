@@ -22,6 +22,9 @@ public class Seance {
     @Column(nullable = false)
     private String name;
 
+    @Column(name = "date_seance")
+    private Date dateSeance;
+
     @CreationTimestamp
     @Column(updatable = false, name = "created_at")
     private Date createdAt;
@@ -106,7 +109,12 @@ public class Seance {
         this.isPublic = isPublic;
     }
 
+    public Date getDateSeance() {
+        return dateSeance;
+    }
 
-    
+    public void setDateSeance(Date dateSeance) {
+        this.dateSeance = dateSeance;
+    }
 
 }

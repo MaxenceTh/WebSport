@@ -10,6 +10,7 @@ import com.thomas.auth_api.entities.User;
 import com.thomas.auth_api.entities.gym.Seance;
 import com.thomas.auth_api.services.SeanceService;
 
+import java.sql.Date;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @RequestMapping("/seances")
@@ -77,6 +79,21 @@ public class SeanceController {
 
     }
 
+    @PutMapping("/{id}/date/{date}")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<?> updateSeanceDate(
+            @PathVariable Integer id,
+            @PathVariable String date,
+            @AuthenticationPrincipal User currentUser) {
+        try {
+            Date sqlDate = Date.valueOf(date);
 
+            SeanceWithExercicesDto updatedDto = seanceService.updateDate(id, sqlDate, currentUser);
+
+            return ResponseEntity.ok(updatedDto);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 
 }

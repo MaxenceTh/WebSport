@@ -6,6 +6,7 @@ import java.util.List;
 public class SeanceUserDto {
     private String name;
     private List<ExercicesDto> exercices;
+    
 
     public String getName() {
         return name;
@@ -22,5 +23,6 @@ public class SeanceUserDto {
     public void setExercices(List<ExercicesDto> exercices) {
         this.exercices = exercices;
     }
+
 
 }
