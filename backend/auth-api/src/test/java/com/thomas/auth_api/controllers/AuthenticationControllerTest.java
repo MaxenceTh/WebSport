@@ -58,10 +58,8 @@ public class AuthenticationControllerTest {
         mockUser.setFullName("Thomas Dev");
         mockUser.setRole(mockRole);
 
-        // Quand j'utilise le service d'authentification pour créer un utilisateur, il doit retourner l'utilisateur mocké
-        when(authenticationService.signup(any(RegisterUserDto.class))).thenReturn(mockUser);
-
         // WHEN & THEN (Exécution et Vérification)
+        when(authenticationService.signup(any(RegisterUserDto.class))).thenReturn(mockUser);
         mockMvc.perform(post("/auth/signup")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(registerDto)))
@@ -84,11 +82,11 @@ public class AuthenticationControllerTest {
         String fakeToken = "mocked-jwt-token-xyz";
         long expirationTime = 3600000;
 
+        // WHEN & THEN
         when(authenticationService.authenticate(any(LoginUserDto.class))).thenReturn(authenticatedUser);
         when(jwtService.generateToken(any(User.class))).thenReturn(fakeToken);
         when(jwtService.getExpirationTime()).thenReturn(expirationTime);
 
-        // WHEN & THEN
         mockMvc.perform(post("/auth/login")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(loginDto)))
