@@ -165,6 +165,7 @@ public class SeanceService {
             dto.setId(seance.getId());
             dto.setName(seance.getName());
             dto.setExercices(exercices);
+            dto.setDate(seance.getDateSeance() != null ? seance.getDateSeance().toString() : null);
 
             return dto;
         }).toList();

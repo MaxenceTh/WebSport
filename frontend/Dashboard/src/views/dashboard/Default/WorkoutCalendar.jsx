@@ -37,18 +37,16 @@ export default function WorkoutCalendar({ isLoading }) {
     const { user } = useContext(AuthContext);
 
     // // Liste des séances affichées sur le calendrier
-    const [events, setEvents] = useState([
-        { id: '1', title: '💪 Squat & Legs', date: '2026-06-01', color: theme.palette.primary.main },
-        { id: '2', title: '🏃‍♂️ HIIT Cardio', date: '2026-06-03', color: theme.palette.secondary.main }
-    ]);
+    const [events, setEvents] = useState([]);
 
     const [allSeances, setAllSeances] = useState([]);
     const [apiLoading, setApiLoading] = useState(true);
 
     // États pour gérer la modale de création
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [selectedDateStr, setSelectedDateStr] = useState(''); 
-    const [workoutName, setWorkoutName] = useState(''); 
+    const [selectedDateStr, setSelectedDateStr] = useState('');
+    const [workoutName, setWorkoutName] = useState('');
+    const [selectedSeance, setSelectedSeance] = useState(null);
 
     useEffect(() => {
         const fetchUserSeances = async () => {
@@ -59,7 +57,18 @@ export default function WorkoutCalendar({ isLoading }) {
             try {
                 const seances = await api.getAllSeances();
                 setAllSeances(seances);
-               
+                console.log('Après filtre:', seances.filter(s => s.date));
+                const calendarEvents = seances
+                    .filter((seance) => seance.date)
+                    .map((seance) => ({
+                        id: String(seance.id),
+                        title: seance.name,
+                        date: seance.date,
+                        color: theme.palette.primary.main
+                    }));
+
+                setEvents(calendarEvents);
+
             } catch (err) {
                 console.error('Erreur récupération titre séance :', err.response?.data || err.message);
                 localStorage.removeItem('token');
@@ -72,28 +81,35 @@ export default function WorkoutCalendar({ isLoading }) {
 
     // 1. Déclenché quand on clique sur une case du calendrier
     const handleDateClick = (arg) => {
-        setSelectedDateStr(arg.dateStr); 
-        setWorkoutName(''); 
-        setIsModalOpen(true); 
+        setSelectedDateStr(arg.dateStr);
+        console.log('Date sélectionnée :', arg.dateStr);
+        setWorkoutName('');
+        setIsModalOpen(true);
     };
 
     // 2. Déclenché quand on valide le formulaire de la modale
-    const handleAddWorkout = () => {
-        if (!workoutName.trim()) return; 
+    const handleAddWorkout = async () => {
+        if (!selectedSeance) return;
 
-        const newEvent = {
-            id: String(Date.now()),
-            title: workoutName,
-            date: selectedDateStr,
-            color: theme.palette.primary.main 
-        };
+        try {
+            await api.updateDateSeance(
+                selectedSeance.id,
+                selectedDateStr
+            );
 
-        setEvents((prev) => [...prev, newEvent]);
+            const newEvent = {
+                id: String(selectedSeance.id),
+                title: selectedSeance.name,
+                date: selectedDateStr,
+                color: theme.palette.primary.main
+            };
 
-        // TODO: Envoi à ta base de données 
-        // await api.saveSeance({ name: workoutName, date: selectedDateStr });
+            setEvents((prev) => [...prev, newEvent]);
 
-        setIsModalOpen(false); 
+            setIsModalOpen(false);
+        } catch (error) {
+            console.error(error);
+        }
     };
 
     // Gestion de l'affichage du Skeleton global de la page
@@ -164,21 +180,21 @@ export default function WorkoutCalendar({ isLoading }) {
 
                 <DialogContent sx={{ p: 3, pt: 1 }}>
                     <Autocomplete
-                        freeSolo
-                        options={allSeances.map((option) => option.name || '')}
-                        value={workoutName}
+                        options={allSeances}
+                        getOptionLabel={(option) => option.name || ''}
+                        value={selectedSeance}
                         onChange={(event, newValue) => {
-                            setWorkoutName(newValue || '');
-                        }}
-                        onInputChange={(event, newInputValue) => {
-                            setWorkoutName(newInputValue || '');
+                            setSelectedSeance(newValue);
+                            setWorkoutName(newValue?.name || '');
+                            console.log('Séance sélectionnée :', newValue);
+                            console.log('ID :', newValue?.id);
                         }}
                         renderInput={(params) => (
                             <TextField
                                 {...params}
                                 autoFocus
                                 margin="dense"
-                                label="Sélectionner ou créer une séance"
+                                label="Sélectionner une séance"
                                 variant="outlined"
                                 placeholder="Cliquez pour voir vos séances..."
                                 sx={{ mt: 1 }}

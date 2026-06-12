@@ -84,7 +84,7 @@ const api = {
   getMaxExerciceWeight: async (exerciceName) => {
     try {
       const response = await apiClient.get(`/exercices/maxByWeight`, {
-        params:  { param: exerciceName } ,
+        params: { param: exerciceName },
       });
       console.log(`🏋️‍♂️ Poids max pour ${exerciceName} :`, response.data);
       return response.data;
@@ -104,18 +104,18 @@ const api = {
       throw error;
     }
   },
-  
+
   weightByTime: async (exerciceName) => {
     try {
       const response = await apiClient.get(`/exercices/weightByTime`, {
-        params:  { param: exerciceName } ,
+        params: { param: exerciceName },
       });
       console.log(`📈 Poids au fil du temps pour ${exerciceName} :`, response.data);
       return response.data;
     } catch (error) {
       console.error(`❌ Erreur récupération poids au fil du temps pour ${exerciceName} :`, error);
       throw error;
-    } 
+    }
   },
 
   totalRepetitionsForWeek: async (startDate, endDate) => {
@@ -131,7 +131,7 @@ const api = {
     }
   },
 
-  totalRepetitionsForMonthByName: async ( exerciceName, startDate, endDate) => {
+  totalRepetitionsForMonthByName: async (exerciceName, startDate, endDate) => {
     try {
       const response = await apiClient.get(`/exercices/totalRepetitionsForMonthByName`, {
         params: { exerciceName, startDate, endDate },
@@ -141,7 +141,7 @@ const api = {
     } catch (error) {
       console.error(`❌ Erreur récupération total répétitions pour ${exerciceName} :`, error);
       throw error;
-    } 
+    }
   },
 
   allByDateDesc: async () => {
@@ -205,7 +205,18 @@ const api = {
     }
   },
 
-  
+  updateDateSeance: async (seanceId, newDate) => {
+    try {
+      const response = await apiClient.put(`/seances/${seanceId}/date/${newDate}`);
+      console.log(`📅 Date de la séance #${seanceId} mise à jour :`, response.data);
+      return response.data;
+    } catch (error) {
+      console.error(`❌ Erreur mise à jour date de la séance #${seanceId} :`, error);
+      throw error;
+    }
+  },
+
+
 
 };
 
