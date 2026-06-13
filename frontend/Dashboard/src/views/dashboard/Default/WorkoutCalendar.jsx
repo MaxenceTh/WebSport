@@ -136,13 +136,20 @@ export default function WorkoutCalendar({ isLoading }) {
                             '& .fc-theme-standard td, & .fc-theme-standard th': { borderColor: theme.palette.divider },
                             '& .fc-col-header-cell': { bgcolor: theme.palette.action.hover, py: 1 },
                             '& .fc-daygrid-day:hover': { bgcolor: theme.palette.action.hover, cursor: 'pointer' },
-                            '& .fc-event': { borderRadius: '6px', padding: '2px 4px', fontWeight: 500, border: 'none', fontSize: '0.75rem' },
-                            '& .fc-toolbar': { mb: '10px !important' }
+                            '& .fc-event': {
+                                borderRadius: '6px', padding: '2px 4px', minHeight: '40px', display: 'flex', justifyContent: 'center',
+                                alignItems: 'center', fontWeight: 500, border: 'none', fontSize: '0.75rem', margin: '4px 0', textAlign: 'center',
+                            },
+                            '& .fc-toolbar': { mb: '10px !important' },
+                            '& .fc-event-title': {
+                                whiteSpace: 'normal',
+                                wordBreak: 'break-word'
+                            },
                         }}
                     >
                         <FullCalendar
                             plugins={[dayGridPlugin, interactionPlugin]}
-                            initialView="dayGridMonth"
+                            initialView="dayGridWeek"
                             locale="fr"
                             firstDay={1}
                             headerToolbar={{ left: 'prev,next', center: 'title', right: '' }}
@@ -152,12 +159,13 @@ export default function WorkoutCalendar({ isLoading }) {
                         />
                     </Box>
                 </Stack>
-            </MainCard>
+            </MainCard >
 
             {/* ============================== MODALE : AJOUTER UNE SÉANCE ============================== */}
-            <Dialog
+            < Dialog
                 open={isModalOpen}
-                onClose={() => setIsModalOpen(false)}
+                onClose={() => setIsModalOpen(false)
+                }
                 fullWidth
                 maxWidth="xs"
                 PaperProps={{ sx: { borderRadius: 3, p: 1 } }}
@@ -217,7 +225,7 @@ export default function WorkoutCalendar({ isLoading }) {
                         Ajouter au planning
                     </Button>
                 </DialogActions>
-            </Dialog>
+            </Dialog >
         </>
     );
 }
